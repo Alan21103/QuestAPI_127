@@ -42,6 +42,7 @@ import com.example.praktikum12.model.Mahasiswa
 import com.example.praktikum12.ui.customwidget.CostumeTopAppBar
 import com.example.praktikum12.ui.viewmodel.HomeUiState
 import com.example.praktikum12.ui.viewmodel.HomeViewModel
+import com.example.praktikum12.PenyediaViewModel
 
 object DestinasiHome : DestinasiNavigasi {
     override val route = "home"
