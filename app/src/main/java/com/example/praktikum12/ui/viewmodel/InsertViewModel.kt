@@ -6,22 +6,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.praktikum12.model.Mahasiswa
 import com.example.praktikum12.repository.MahasiswaRepository
 import kotlinx.coroutines.launch
 
-class InsertViewModel(private val mhs: MahasiswaRepository): ViewModel(){
+class InsertViewModel(private val mhs: MahasiswaRepository) : ViewModel() {
+
     var uiState by mutableStateOf(InsertUiState())
         private set
 
-    fun updateInsertMhsState(insertUIEvent. InsertUiEvent){
+    fun updateInsertMhsState(insertUiEvent: InsertUiEvent) {
         uiState = InsertUiState(insertUiEvent = insertUiEvent)
     }
 
-    suspend fun insertMhs(){
+    fun insertMhs() {
         viewModelScope.launch {
             try {
-                mhs.insertMahasiswa(uiState.insertUiEvent.toMhs)
-            }catch (e:Exception){
+                mhs.insertMahasiswa(uiState.insertUiEvent.toMhs())
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -39,4 +41,26 @@ data class InsertUiEvent(
     val jenisKelamin: String = "",
     val kelas: String = "",
     val angkatan: String = ""
+)
+
+fun InsertUiEvent.toMhs(): Mahasiswa = Mahasiswa(
+    nim = nim,
+    nama = nama,
+    alamat = alamat,
+    jenis_kelamin = jenisKelamin,
+    kelas = kelas,
+    angkatan = angkatan
+)
+
+fun Mahasiswa.toUiStateMhs(): InsertUiState = InsertUiState(
+    insertUiEvent = toInsertUiEvent()
+)
+
+fun Mahasiswa.toInsertUiEvent(): InsertUiEvent = InsertUiEvent(
+    nim = nim,
+    nama = nama,
+    alamat = alamat,
+    jenisKelamin = jenis_kelamin,
+    kelas = kelas,
+    angkatan = angkatan
 )
